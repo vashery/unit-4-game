@@ -1,0 +1,200 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <link rel="stylesheet" href="assets/css/reset.css">
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm"
+    crossorigin="anonymous">
+  <link rel="stylesheet" href="assets/css/style.css">
+  <title>Document</title>
+</head>
+
+<body>
+
+  <div id=cardarea></div>
+
+
+  <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN"
+    crossorigin="anonymous"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q"
+    crossorigin="anonymous"></script>
+  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl"
+    crossorigin="anonymous"></script>
+  <script>
+
+    $(document).ready(function () {
+      var character1 = {
+        name: "character1",
+        baseattackpower: 8,
+        basehealth: 150,
+        currentside: "friend"
+      }
+      var character2 = {
+        name: "character2",
+        baseattackpower: 12,
+        basehealth: 120,
+        currentside: "friend"
+      }
+      var character3 = {
+        name: "character3",
+        baseattackpower: 20,
+        basehealth: 100,
+        currentside: "friend"
+      }
+      var character4 = {
+        name: "character4",
+        baseattackpower: 27,
+        basehealth: 180,
+        currentside: "friend"
+      }
+      var character5 = {
+        name: "character5",
+        baseattackpower: 30,
+        basehealth: 160,
+        currentside: "friend"
+      }
+
+      var friendarray = ["character1", "character2", "character3", "character4", "character5"];
+      var heroarray = [];
+      var enemyarray = [];
+      var battleenemyarray = [];
+
+      for (var i = 0; i < friendarray.length; i++) {
+        $("#cardarea").append("<div class='card' id='" + friendarray[i] + "'>" + friendarray[i] + "</div>")
+      }
+
+      function reduceFriendHealth(friend1, foe1) {
+
+        eval(friend1).basehealth = eval(friend1).basehealth - eval(foe1).baseattackpower;
+
+      }
+
+      function reduceFoeHealth(foe2, friend2) {
+
+        eval(foe2).basehealth = eval(foe2).basehealth - eval(friend2).baseattackpower;
+
+      }
+
+      function increaseAttack(friend3) {
+        eval(friend3).baseattackpower = eval(friend3).baseattackpower + eval(friend3).baseattackpower;
+
+      }
+
+      function buildAttackArea(friend4, foe4) {
+        if ($("#friendattack").is('.attackarea') === false && $("#foeattack").is('.attackarea') === false) {
+            $("#cardarea").append("<p class='attackarea' id='friendattack'>You attacked " + foe4 + " for " + eval(friend4).baseattackpower + " health points! </p>");
+            $("#cardarea").append("<p class='attackarea' id='foeattack'>" + foe4 + " attacked you back for " + eval(foe4).baseattackpower + " health points! </p>");
+          };
+      };
+      function updateAttackArea(friend5, foe5) {
+        $("#friendattack").text("You attacked " + foe5 + " for " + eval(friend5).baseattackpower + " health points!");
+        $("#foeattack").text(foe5 + "attacked you back for " + eval(foe5).baseattackpower + " health points!");
+
+      };
+
+
+
+
+      $(".card").click(function () {
+        characterselection = $(this).text();
+        if (heroarray.includes(characterselection)) {
+
+        }
+        else if (battleenemyarray.includes(characterselection)) {
+
+        }
+        else if (enemyarray.includes(characterselection)) {
+          $(this).removeClass("bg-danger");
+          $(this).addClass("bg-primary");
+          battleenemyarray.push(characterselection);
+          index2 = enemyarray.indexOf(characterselection);
+          delete enemyarray[index2];
+          for (var j = 0; j < enemyarray.length; j++) {
+            $('#' + enemyarray[j]).addClass("hidden")
+          }
+          $("#cardarea").append("<button type='button' class='btn btn-primary' id='submitbutton'>submit</button>")
+
+        }
+        else {
+          index = friendarray.indexOf(characterselection);
+          delete friendarray[index];
+          for (var j = 0; j < friendarray.length; j++) {
+            arraystore = friendarray[j];
+            enemyarray.push(arraystore);
+          }
+          heroarray.push(characterselection);
+          $(this).addClass("bg-success");
+          for (var j = 0; j < enemyarray.length; j++) {
+            storeindex = enemyarray[j];
+            $('#' + storeindex).addClass("bg-danger");
+            console.log(eval(storeindex));
+
+
+          }
+
+
+        }
+        $(".btn").click(function () {
+          friendholder = heroarray[0];
+          foeholder = battleenemyarray[0];
+          reduceFriendHealth(friendholder, foeholder);
+          reduceFoeHealth(foeholder, friendholder);
+          $("#" + friendholder).text(friendholder + " " + eval(friendholder).basehealth);
+          $("#" + foeholder).text(foeholder + " " + eval(foeholder).basehealth);
+
+          if (eval(friendholder).basehealth <= 0) {
+            $(".btn").addClass("hidden");
+            $("#" + foeholder).addClass("hidden");
+            $("#friendattack").addClass("hidden");
+            $("#foeattack").addClass("hidden");
+            $("#cardarea").append("<h3>YOU HAVE LOST</h3>")
+
+          }
+          else if (eval(foeholder).basehealth <= 0) {
+            $(".btn").addClass("hidden");
+            $("#" + foeholder).remove();
+            battleenemyarray = [];
+            index5 = enemyarray.indexOf(foeholder);
+            delete enemyarray[index5]
+            for (var j = 0; j < enemyarray.length; j++) {
+            $('#' + enemyarray[j]).removeClass("hidden")
+            }
+          }
+          else {
+            buildAttackArea(friendholder, foeholder);
+
+          }
+          increaseAttack(friendholder);
+          updateAttackArea(friendholder, foeholder)
+          
+          
+
+
+        });
+
+      });
+
+
+
+
+
+
+
+
+
+
+    });
+
+
+
+
+
+
+  </script>
+
+</body>
+
+</html>
