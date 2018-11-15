@@ -17,22 +17,23 @@
   <head> </head>
   <main>
     <div>
-      <h3 id="hideafterstart">Select a Character</h3>
+      <h3 class="text-light container"id="hideafterstart">Select a Character</h3>
       <div class="row cardarea container no-gutters" id="playerselect"></div>
     </div>
     <div>
-        <h3>Selected Character</h3>
+        <h3 class="text-light container">Selected Character</h3>
         <div class="row cardarea container no-gutters" id="selectedcharacter"></div>
     </div>
     <div>
-      <h3>Select a Enemy</h3>
+      <h3 class="text-light container">Select Enemy</h3>
       <div class="row cardarea container no-gutters" id="enemies"></div>
     </div>
     <div>
-      <h3>BATTLE!</h3>
+      <h3 class="text-light container">BATTLE!</h3>
       <div class="row cardarea container no-gutters" id="battle"></div>
     </div>
-    <button type="button" class="btn btn-danger hidden" id="attackbutton">Attack!</button>
+    <br>
+    <button type="button" class="btn btn-sm btn-danger hidden container" id="attackbutton">Attack!</button>
     <div id="battletext"></div>
   </main>
 
@@ -46,170 +47,7 @@
     crossorigin="anonymous"></script>
   <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl"
     crossorigin="anonymous"></script>
-  <script>
-
-    $(document).ready(function () {
-      //define objects
-      var aang = {
-        baseattackpower: 6,
-        basehealth: 150,
-      }
-      var katara = {
-        baseattackpower: 8,
-        basehealth: 120,
-      }
-      var sokka = {
-        baseattackpower: 10,
-        basehealth: 100,
-      }
-      var zuko = {
-        baseattackpower: 13,
-        basehealth: 180,
-      }
-      var toph = {
-        baseattackpower: 15,
-        basehealth: 160,
-      }
-      //create arrays
-      var availableplayers = ["aang", "katara", "sokka", "zuko", "toph"];
-      var currentplayer = [];
-      var enemyarray = [];
-      var battlearray = [];
-      var attackareabuilt = false;
-
-      //display initial character selection
-      for (var i = 0; i < availableplayers.length; i++) {
-        $("#playerselect").append("<div class='card bg-light col-2 text-center border-success playerselect' id='" + availableplayers[i] + "'><div class='card-header playerselect'>" + availableplayers[i] +"</div><img class='card-img-top' src='assets/images/" + availableplayers[i] + ".jpg' alt='Card image cap'><div class='card-body'><h10 class='card-title'>HP " + eval(availableplayers[i]).basehealth + "</h10></div></div>")
-      }
-
-      function reduceFriendHealth(friend1, foe1) {
-
-        eval(friend1).basehealth = eval(friend1).basehealth - eval(foe1).baseattackpower;
-
-      }
-
-      function reduceFoeHealth(foe2, friend2) {
-
-        eval(foe2).basehealth = eval(foe2).basehealth - eval(friend2).baseattackpower;
-
-      }
-
-      function increaseAttack(friend3) {
-        eval(friend3).baseattackpower = eval(friend3).baseattackpower + eval(friend3).baseattackpower;
-
-      }
-
-      function buildAttackArea(friend4, foe4) {
-        if ($("#friendattack").is('.attackarea') === false && $("#foeattack").is('.attackarea') === false) {
-            $("#battletext").append("<p class='attackarea' id='friendattack'>You attacked " + foe4 + " for " + eval(friend4).baseattackpower + " health points! </p>");
-            $("#battletext").append("<p class='attackarea' id='foeattack'>" + foe4 + " attacked you back for " + eval(foe4).baseattackpower + " health points! </p>");
-          };
-      };
-      function updateAttackArea(friend5, foe5) {
-        $("#friendattack").text("You attacked " + foe5 + " for " + eval(friend5).baseattackpower + " health points!");
-        $("#foeattack").text(foe5 + " attacked you back for " + eval(foe5).baseattackpower + " health points!");
-
-      };
-      function displayEnemyArea(){
-        for (var i = 0; i < enemyarray.length; i++) {
-        $("#enemies").append("<div class='card bg-light col-2 text-center border-danger enemyselect' id='" + enemyarray[i] + "'><div class='card-header playerselect'>" + enemyarray[i] +"</div><img class='card-img-top' src='assets/images/" + enemyarray[i] + ".jpg' alt='Card image cap'><div class='card-body'><h10 class='card-title'>HP " + eval(enemyarray[i]).basehealth +"</h10></div></div>")
-        }
-      }
-        function displayFakeEnemyArea(){
-        for (var i = 0; i < enemyarray.length; i++) {
-        $("#enemies").append("<div class='card bg-light col-2 text-center border-danger' id='" + enemyarray[i] + "'><div class='card-header playerselect'>" + enemyarray[i] +"</div><img class='card-img-top' src='assets/images/" + enemyarray[i] + ".jpg' alt='Card image cap'><div class='card-body'><h10 class='card-title'>HP " + eval(enemyarray[i]).basehealth +"</h10></div></div>")
-        }
-
-      }
-      function updateFighterHP(){
-        $("#selectedcharacter").contents().remove()
-          $("#selectedcharacter").append("<div class='card bg-light col-2-3 text-center border-success playerselect'><div class='card-header'>" + currentplayer[0] +"</div><img class='card-img-top' src='assets/images/" + currentplayer[0] + ".jpg' alt='Card image cap'><div class='card-body'><h10 class='card-title'>HP " + eval(currentplayer[0]).basehealth + " </h10></div></div>")
-          $("#battle").contents().remove()
-          $("#battle").append("<div class='card bg-light col-2-3 text-center border-danger'><div class='card-header'>" + battlearray[0] +"</div><img class='card-img-top' src='assets/images/" + battlearray[0] + ".jpg' alt='Card image cap'><div class='card-body'><h10 class='card-title'>HP " + eval(battlearray[0]).basehealth + "</h10></div></div>")
-      }
-      //select character
-      $(".playerselect").click(function () {
-        characterselection = $(this).attr("id");
-        charselindex = availableplayers.indexOf(characterselection);
-        availableplayers.splice(charselindex, 1);
-        for (var i = 0; i < availableplayers.length; i++) {
-            $('#' + availableplayers[i]).addClass("hidden")
-            enemyarray.push(availableplayers[i]);
-        }
-        currentplayer.push(characterselection);
-        $("#playerselect").addClass("hidden");
-        $("#hideafterstart").addClass("hidden");
-        $("#selectedcharacter").append("<div class='card bg-light col-2-3 text-center border-success playerselect'><div class='card-header'>" + currentplayer[0] +"</div><img class='card-img-top' src='assets/images/" + currentplayer[0] + ".jpg' alt='Card image cap'><div class='card-body'><h10 class='card-title'>HP " + eval(currentplayer[0]).basehealth + " </h10></div></div>")
-        displayEnemyArea();
-      });
-      //select enemy
-      $(document).on('click', '.enemyselect', function () {
-          enemyselection = $(this).attr("id");
-          battlearray.push(enemyselection)
-          removefromarray = enemyarray.indexOf(enemyselection);
-          enemyarray.splice(removefromarray, 1);
-          console.log(enemyarray)
-          $("#enemies").contents().remove();
-          displayFakeEnemyArea();
-          $("#battle").append("<div class='card bg-light col-2-3 text-center border-danger'><div class='card-header'>" + battlearray[0] +"</div><img class='card-img-top' src='assets/images/" + battlearray[0] + ".jpg' alt='Card image cap'><div class='card-body'><h10 class='card-title'>HP " + eval(battlearray[0]).basehealth + "</h10></div></div>")
-          $("#attackbutton").removeClass("hidden")
-
-        });
-        //fight
-        $(document).on('click', '#attackbutton', function () {
-          friendholder = currentplayer[0];
-          foeholder = battlearray[0];
-          reduceFriendHealth(friendholder, foeholder);
-          reduceFoeHealth(foeholder, friendholder);
-          updateFighterHP();
-          console.log(eval(friendholder).basehealth)
-          console.log(eval(foeholder).basehealth)
-
-          if (attackareabuilt === false) {
-            buildAttackArea(friendholder, foeholder)
-            attackareabuilt = true;
-          }
-          if (eval(friendholder).basehealth <= 0) {
-           $("#attackbutton").addClass("hidden");
-           $("#" + foeholder).addClass("hidden");
-           $("#friendattack").addClass("hidden");
-           $("#attackbutton").addClass("hidden");
-           $("#cardarea").append("<h3>YOU HAVE LOST</h3>")
-           }
-           else if (eval(foeholder).basehealth <= 0) {
-            $("#attackbutton").addClass("hidden");
-            $("#" + foeholder).remove();
-            battlearray = [];
-            index5 = enemyarray.indexOf(foeholder);
-            delete enemyarray[index5]
-            for (var j = 0; j < enemyarray.length; j++) {
-            $('#' + enemyarray[j]).removeClass("hidden")
-            }
-            $("#battle").contents().remove()
-            $("#enemies").contents().remove();
-            displayEnemyArea();
-            if (enemyarray.length === 0){
-              $("main").contents().remove()
-              $("main").append("<div class='jumbotron container text-justify-center'><h1>YOU WIN!!!</h1></div>")
-              $("main").append("<button type='button' class="btn btn-danger hidden" id="attackbutton">Attack!</button>)
-)
-            }
-          }
-          console.log(attackareabuilt)
-          updateAttackArea(friendholder, foeholder);
-          increaseAttack(friendholder)
-        });
-
-
-      });
-
-
-
-
-
-
-
-  </script>
+  <script src="assets/javascript/game.js"></script>
 
 </body>
 

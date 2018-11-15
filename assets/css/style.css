@@ -1,3 +1,10 @@
+body {
+    background-image: url("../images/background2.jpg");
+
+}
 .hidden {
     display: none;
+}
+.card-header {
+    padding: none !important;
 }
