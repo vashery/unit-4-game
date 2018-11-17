@@ -117,19 +117,17 @@ $(document).ready(function () {
         reduceFriendHealth(friendholder, foeholder);
         reduceFoeHealth(foeholder, friendholder);
         updateFighterHP();
-        console.log(eval(friendholder).basehealth)
-        console.log(eval(foeholder).basehealth)
 
         if (attackareabuilt === false) {
           buildAttackArea(friendholder, foeholder)
           attackareabuilt = true;
         }
         if (eval(friendholder).basehealth <= 0) {
-            $("main").contents().remove()
-            $("main").append("<div class='jumbotron container text-center'><h1>YOU LOST!!!</h1><button type='button' class='btn btn-primary btn-lg' id='restartbutton'>Restart</button></div>")
+          $("main").contents().remove()
+          $("main").append("<div class='jumbotron container text-center'><h1>YOU LOST!!!</h1><button type='button' class='btn btn-primary btn-lg' id='restartbutton'>Restart</button></div>")
         }
          
-            else if (eval(foeholder).basehealth <= 0) {
+        else if (eval(foeholder).basehealth <= 0) {
           $("#attackbutton").addClass("hidden");
           $("#battletext").contents().remove()
           attackareabuilt = false;
@@ -148,7 +146,6 @@ $(document).ready(function () {
             $("main").append("<div class='jumbotron container text-center'><h1>YOU WIN!!!</h1><button type='button' class='btn btn-primary btn-lg' id='restartbutton'>Restart</button></div>")
           }
         }
-        console.log(attackareabuilt)
         updateAttackArea(friendholder, foeholder);
         increaseAttack(friendholder)
       });
